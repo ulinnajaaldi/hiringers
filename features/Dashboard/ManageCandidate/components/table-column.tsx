@@ -6,12 +6,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { InferResponseType } from "hono";
 
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { client } from "@/lib/hono";
 import { firstLetterUppercase } from "@/lib/text";
 
-import { TableAction } from "./table-action";
+import { TableAction, TableActionOption } from "./table-action";
 
 export type ResponseType = InferResponseType<
   (typeof client.api)["job-application"]["list"][":slug"]["$get"],
@@ -40,6 +41,9 @@ const columnConfigMap: Record<
 > = {
   full_name: {
     header: "FULL NAME",
+  },
+  status: {
+    header: "Application Status",
   },
   email: {
     header: "EMAIL ADDRESS",
@@ -136,5 +140,23 @@ export const generateColumns = (
     })
     .filter(Boolean) as ColumnDef<ResponseType>[];
 
-  return dynamicColumns;
+  const statusColumn: ColumnDef<ResponseType> = {
+    accessorKey: "status",
+    header: columnConfigMap.status.header,
+    cell: ({ row }) => (
+      <span className="capitalize">
+        <Badge variant="draft">
+          {firstLetterUppercase(row.original.status || "")}
+        </Badge>
+      </span>
+    ),
+  };
+
+  const tableActionOption: ColumnDef<ResponseType> = {
+    id: "actions",
+    header: "",
+    cell: ({ row }) => <TableActionOption id={row.original.id} />,
+  };
+
+  return [...dynamicColumns, statusColumn, tableActionOption];
 };
