@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import NotFound from "@/app/not-found";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -26,6 +27,10 @@ const JobApplyFeature: React.FC = () => {
   const { closeDialog, type } = useDialog();
 
   const { isLoading, queryDetail, handlePhotoCapture } = useJobApply();
+
+  if (queryDetail.isError) {
+    return <NotFound />;
+  }
 
   return (
     <main className="container mx-auto flex min-h-screen flex-col gap-4 border-x p-6 px-4 md:gap-6 lg:gap-6 lg:p-10">

@@ -2,6 +2,7 @@
 
 import React from "react";
 
+import NotFound from "@/app/not-found";
 import Image from "next/image";
 
 import { DataTable } from "@/components/common/data-table";
@@ -17,6 +18,10 @@ const ManageCandidateFeature: React.FC = () => {
 
   if (queryDetail.isLoading) {
     return <SkeletonPage />;
+  }
+
+  if (queryDetail.isError) {
+    return <NotFound />;
   }
 
   return (
