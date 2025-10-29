@@ -4,6 +4,9 @@
 
 - LIVE demo (User): [https://hiringers.vercel.app/](https://hiringers.vercel.app/)
 - LIVE demo (Admin): [https://hiringers.vercel.app/admin](https://hiringers.vercel.app/admin)
+- AUTH FLOW MOCK: [https://hiringers.vercel.app/admin](https://hiringers.vercel.app/admin)
+
+- email: paleto@gmail.com - password: paleto123
 
 ### Architecture
 
