@@ -4,7 +4,7 @@
 
 - LIVE demo (User): [https://hiringers.vercel.app/](https://hiringers.vercel.app/)
 - LIVE demo (Admin): [https://hiringers.vercel.app/admin](https://hiringers.vercel.app/admin)
-- AUTH FLOW MOCK: [https://hiringers.vercel.app/admin](https://hiringers.vercel.app/admin)
+- AUTH FLOW MOCK: [https://hiringers.vercel.app/auth/register](https://hiringers.vercel.app/auth/register)
 
 - email: paleto@gmail.com - password: paleto123
 
