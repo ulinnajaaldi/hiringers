@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import { addWeeks, format } from "date-fns";
-import { desc, eq, ilike, or } from "drizzle-orm";
+import { and, desc, eq, ilike, or } from "drizzle-orm";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { z } from "zod";
@@ -63,6 +63,87 @@ const jobOpeningController = new Hono()
   )
   .get(
     "/",
+    zValidator(
+      "query",
+      z.object({
+        search: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      try {
+        const { search } = c.req.valid("query");
+
+        const jobs = await db
+          .select()
+          .from(jobOpening)
+          .where(
+            and(
+              search
+                ? or(
+                    ilike(jobOpening.title, `%${search}%`),
+                    ilike(jobOpening.description, `%${search}%`),
+                  )
+                : undefined,
+              eq(jobOpening.status, "active"),
+            ),
+          )
+          .orderBy(desc(jobOpening.createdAt));
+
+        const mappingData = jobs.map((job) => {
+          const getSalaryDisplayText = () => {
+            if (job.min_salary && job.max_salary) {
+              return `Rp${formatNumber(job.min_salary)} - Rp${formatNumber(job.max_salary)}`;
+            } else if (job.min_salary) {
+              return `Rp${formatNumber(job.min_salary)}`;
+            } else if (job.max_salary) {
+              return `Rp${formatNumber(job.max_salary)}`;
+            }
+            return "Salary not specified";
+          };
+
+          return {
+            id: job.id,
+            slug: job.slug,
+            title: job.title,
+            status: job.status,
+            company: {
+              name: "Rakamin",
+              location: "Jakarta Selatan",
+              photo_url: "/images/rakamin-logo.png",
+            },
+            salary_range: {
+              min: job.min_salary,
+              max: job.max_salary,
+              currency: "IDR",
+              display_text: getSalaryDisplayText(),
+            },
+            list_card: {
+              badge: firstLetterUppercase(job.status),
+              started_on_text: `started on ${format(addWeeks(new Date(job.createdAt!), 1), "d MMM yyyy")}`,
+              cta: "Manage Job",
+            },
+            createdAt: job.createdAt,
+            updatedAt: job.updatedAt,
+          };
+        });
+
+        return c.json(
+          {
+            data: mappingData,
+            message: "Success get job opening",
+          },
+          200,
+        );
+      } catch (error) {
+        console.error("Error to fetch job openings:", error);
+        throw new HTTPException(500, {
+          res: c.json({ error: "Failed to fetch job openings" }, 500),
+        });
+      }
+    },
+  )
+  .get(
+    "/all",
     zValidator(
       "query",
       z.object({

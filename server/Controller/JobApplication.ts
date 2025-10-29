@@ -120,36 +120,102 @@ const jobApplicationController = new Hono()
       }
     },
   )
-  .get("/", async (c) => {
-    try {
-      const applications = await db
-        .select()
-        .from(jobApplication)
-        .orderBy(jobApplication.createdAt);
+  .get(
+    "/list/:slug",
+    zValidator(
+      "param",
+      z.object({
+        slug: z.string(),
+      }),
+    ),
+    async (c) => {
+      try {
+        const { slug } = c.req.valid("param");
 
-      return c.json(
-        {
-          data: applications,
-          message: "Success get job applications",
-        },
-        200,
-      );
-    } catch (error) {
-      console.error("Error fetching job applications:", error);
-      throw new HTTPException(500, {
-        res: c.json({ error: "Failed to fetch applications" }, 500),
-      });
-    }
-  })
+        const rows = await db
+          .select({
+            opening: jobOpening,
+            application: jobApplication,
+          })
+          .from(jobOpening)
+          .leftJoin(
+            jobApplication,
+            eq(jobOpening.id, jobApplication.job_opening_id),
+          )
+          .where(eq(jobOpening.slug, slug));
+
+        if (rows.length === 0) {
+          return c.json({ message: "Job opening not found", data: [] }, 404);
+        }
+
+        const opening = rows[0].opening;
+        const applications = rows
+          .filter((r) => r.application && r.application.id) // skip nulls from LEFT JOIN
+          .map((r) => ({
+            id: r.application!.id,
+            job_opening_id: r.application!.job_opening_id,
+            photo_profile_url: r.application!.photo_profile_url,
+            full_name: r.application!.full_name,
+            date_of_birth: r.application!.date_of_birth, // will serialize to ISO
+            gender: r.application!.gender,
+            domicile: r.application!.domicile,
+            phone: r.application!.phone,
+            email: r.application!.email,
+            linkedin_link: r.application!.linkedin_link,
+            status: r.application!.status,
+            createdAt: r.application!.createdAt,
+            updatedAt: r.application!.updatedAt,
+          }));
+
+        return c.json(
+          {
+            data: {
+              job_opening: {
+                id: opening.id,
+                title: opening.title,
+                slug: opening.slug,
+                status: opening.status,
+                type: opening.type,
+                description: opening.description,
+                number_candidate: opening.number_candidate,
+                min_salary: opening.min_salary,
+                max_salary: opening.max_salary,
+                minimum_profile_information:
+                  opening.minimum_profile_information,
+                createdAt: opening.createdAt,
+                updatedAt: opening.updatedAt,
+              },
+              applications,
+            },
+            meta: { count: applications.length },
+            message: "Success get job applications",
+          },
+          200,
+        );
+      } catch (error) {
+        console.error("Error fetching job applications:", error);
+        throw new HTTPException(500, {
+          res: c.json({ error: "Failed to fetch applications" }, 500),
+        });
+      }
+    },
+  )
+
   .get("/:id", async (c) => {
     try {
       const { id } = c.req.param();
 
       const applications = await db
-        .select()
-        .from(jobApplication)
-        .where(eq(jobApplication.id, id))
-        .limit(1);
+        .select({
+          opening: jobOpening,
+          application: jobApplication,
+        })
+        .from(jobOpening)
+        .leftJoin(
+          jobApplication,
+          eq(jobOpening.id, jobApplication.job_opening_id),
+        )
+        .where(eq(jobApplication.id, id));
 
       if (applications.length === 0) {
         throw new HTTPException(404, {

@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 
 export function useMediaQuery(query: string) {
-  const [value, setValue] = useState<boolean>(false);
+  const [value, setValue] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const result = window.matchMedia(query);
@@ -12,14 +17,9 @@ export function useMediaQuery(query: string) {
       setValue(event.matches);
     }
 
-    const rafId = requestAnimationFrame(() => {
-      setValue(result.matches);
-    });
-
     result.addEventListener("change", onChange);
 
     return () => {
-      cancelAnimationFrame(rafId);
       result.removeEventListener("change", onChange);
     };
   }, [query]);

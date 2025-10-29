@@ -90,7 +90,10 @@ export const JobApplyStore: React.FC<{
             return false;
           }
         },
-        { message: "Please enter a valid LinkedIn URL" },
+        {
+          message:
+            "Please copy paste your Linkedin URL, example: https://www.linkedin.com/in/username",
+        },
       );
     };
 
@@ -138,7 +141,12 @@ export const JobApplyStore: React.FC<{
       email: getFieldValidation("email")?.is_off
         ? z.string().optional()
         : getFieldValidation("email")?.required
-          ? z.string().email({ message: "Email is required" })
+          ? z
+              .string()
+              .email({
+                message:
+                  "Please enter your email in the format: name@example.com",
+              })
           : z.string().optional(),
       linkedin_link: createLinkedInValidation(),
     });

@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { CalendarDays, CircleCheck, Upload } from "lucide-react";
 import Image from "next/image";
 
+import { ImageZoom } from "@/components/common/image-zoom";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import {
@@ -60,15 +61,17 @@ const FormJobApply = () => {
                 <span className="text-destructive">*</span>
               )}
             </p>
-            <div className="relative h-32 w-32 overflow-hidden rounded-2xl">
-              <Image
-                src={photoPreview || "/images/avatar.avif"}
-                alt="Photo Profile"
-                height={400}
-                width={400}
-                className="h-full w-full object-cover"
-              />
-            </div>
+            <ImageZoom>
+              <div className="relative h-32 w-32 overflow-hidden rounded-2xl">
+                <Image
+                  src={photoPreview || "/images/avatar.avif"}
+                  alt="Photo Profile"
+                  height={400}
+                  width={400}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </ImageZoom>
 
             <Button
               type="button"

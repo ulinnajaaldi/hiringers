@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Options, useQueryState } from "nuqs";
 import { useForm } from "react-hook-form";
 import { useDebounce } from "use-debounce";
 
@@ -13,21 +12,21 @@ import useDialog from "@/hooks/useDialog";
 
 import { createFieldValidationJobOpening } from "@/lib/form";
 
-import { useCreateJobOpening, useGetJobOpenings } from "@/useCases/JobOpening";
+import {
+  useCreateJobOpening,
+  useGetJobOpeningsAll,
+} from "@/useCases/JobOpening";
 
 import { formSchema, FormSchemaType } from "../types";
 
 interface JobOpeningProps {
   value: string | null;
   search: string | null;
-  setSearch: (
-    value: string | ((old: string | null) => string | null) | null,
-    options?: Options | undefined,
-  ) => Promise<URLSearchParams>;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
   isDraft: boolean;
   setIsDraft: React.Dispatch<React.SetStateAction<boolean>>;
   mutationAdd: ReturnType<typeof useCreateJobOpening>;
-  queryAll: ReturnType<typeof useGetJobOpenings>;
+  queryAll: ReturnType<typeof useGetJobOpeningsAll>;
   form: ReturnType<typeof useForm<FormSchemaType>>;
   onSubmit: (values: FormSchemaType) => void;
   handleOpenDialogJob: () => void;
@@ -39,12 +38,12 @@ export const JobOpeningStore: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const { openDialog, closeDialog } = useDialog();
-  const [search, setSearch] = useQueryState("");
+  const [search, setSearch] = useState("");
   const [value] = useDebounce(search, 300);
   const [isDraft, setIsDraft] = useState<boolean>(false);
 
   const mutationAdd = useCreateJobOpening();
-  const queryAll = useGetJobOpenings({
+  const queryAll = useGetJobOpeningsAll({
     search: value ? value : undefined,
   });
 

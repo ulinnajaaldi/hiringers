@@ -1,24 +1,16 @@
 "use client";
 
-import React from "react";
-
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import React, { Suspense } from "react";
 
 import CardCTAJobOpening from "@/components/common/card-cta-job-opening";
 import NotFound from "@/components/common/not-found";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group";
 
-import { CardJob, SkeletonCardJob } from "./components";
+import { CardJob, SearchJob, SkeletonCardJob } from "./components";
 import { useJobOpening } from "./hook";
 import { FormAdd } from "./sections";
 
 const AdminFeature: React.FC = () => {
-  const { value, search, setSearch, queryAll, handleOpenDialogJob } =
-    useJobOpening();
+  const { queryAll, handleOpenDialogJob } = useJobOpening();
 
   return (
     <main className="mx-auto grid min-h-auto grid-cols-12 gap-4 px-4 pt-6 pb-4 lg:min-h-[90svh] lg:gap-6 lg:px-6 lg:pt-9 lg:pb-6">
@@ -30,31 +22,9 @@ const AdminFeature: React.FC = () => {
       </section>
 
       <section className="col-span-12 flex h-full flex-col gap-4 lg:order-1 lg:col-span-9">
-        <InputGroup>
-          <InputGroupInput
-            placeholder="Search by job details"
-            value={search || ""}
-            onChange={(e) => setSearch(e.target.value)}
-            disabled={queryAll.isLoading}
-          />
-          <InputGroupAddon align="inline-end">
-            <button
-              onClick={() => {
-                if (value) {
-                  setSearch("");
-                }
-              }}
-              disabled={queryAll.isLoading}
-              className="mr-0.5 cursor-pointer"
-            >
-              {value ? (
-                <XMarkIcon className="text-neutral-60 hover:text-primary size-6 stroke-1" />
-              ) : (
-                <MagnifyingGlassIcon className="text-primary size-6 stroke-1" />
-              )}
-            </button>
-          </InputGroupAddon>
-        </InputGroup>
+        <Suspense>
+          <SearchJob />
+        </Suspense>
 
         <div className="flex flex-col gap-4">
           {queryAll.isLoading ? (

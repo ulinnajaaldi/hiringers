@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import DashboardNav from "@/components/layout/dashboard-nav";
 
 const DashboardLayout = ({
   children,
@@ -7,16 +7,7 @@ const DashboardLayout = ({
 }>) => {
   return (
     <>
-      <nav className="flex h-16 items-center justify-between border-b px-5">
-        <h1 className="text-xl font-bold text-neutral-100">Job List</h1>
-        <Avatar>
-          <AvatarImage
-            src="https://github.com/ulinnajaaldi.png"
-            alt="@ulinnajaaldi"
-          />
-          <AvatarFallback>UA</AvatarFallback>
-        </Avatar>
-      </nav>
+      <DashboardNav />
       {children}
     </>
   );

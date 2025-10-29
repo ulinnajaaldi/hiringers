@@ -28,7 +28,7 @@ const JobApplyFeature: React.FC = () => {
   const { isLoading, queryDetail, handlePhotoCapture } = useJobApply();
 
   return (
-    <main className="container mx-auto flex min-h-screen flex-col gap-4 border-x p-6 md:gap-6 lg:gap-6 lg:p-10">
+    <main className="container mx-auto flex min-h-screen flex-col gap-4 border-x p-6 px-4 md:gap-6 lg:gap-6 lg:p-10">
       {isLoading ? (
         <SkeletonPage />
       ) : (

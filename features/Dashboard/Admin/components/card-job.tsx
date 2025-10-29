@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +14,7 @@ import { firstLetterUppercase } from "@/lib/text";
 interface CardJobProps {
   item: {
     id: string;
+    slug: string;
     status: "draft" | "active" | "inactive";
     title: string;
     salary_range: {
@@ -59,7 +62,13 @@ const CardJob: React.FC<CardJobProps> = ({ item }) => {
             {item.salary_range.display_text}
           </p>
         </div>
-        <Button size="sm">{item.list_card.cta}</Button>
+        {item.list_card.cta && (
+          <Button size="sm" asChild>
+            <Link href={`/admin/manage-candidate/${item.slug}`}>
+              {item.list_card.cta}
+            </Link>
+          </Button>
+        )}
       </div>
     </div>
   );

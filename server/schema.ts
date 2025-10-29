@@ -1,8 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
-import { desc, relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { integer, json, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
 
 export const jobOpening = pgTable("job_opening", {
   id: text("id").primaryKey().$defaultFn(createId),

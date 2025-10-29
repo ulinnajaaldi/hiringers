@@ -22,8 +22,8 @@ const JobDetail: React.FC<JobDetailProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-6 py-6">
-      <div className="flex items-start justify-between gap-6 px-6">
-        <div className="flex items-start gap-6">
+      <div className="flex flex-col items-start justify-between gap-2 px-6 lg:flex-row lg:gap-6">
+        <div className="flex items-start gap-2 lg:gap-6">
           <div className="relative h-12 w-12 shrink-0">
             <Image
               src={

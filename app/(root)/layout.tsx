@@ -13,7 +13,7 @@ const RootLayout = ({
           boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.10)",
         }}
       >
-        <nav className="container mx-auto flex items-center justify-end">
+        <nav className="container mx-auto flex items-center justify-end px-4">
           <Avatar>
             <AvatarImage
               src="https://github.com/ulinnajaaldi.png"
