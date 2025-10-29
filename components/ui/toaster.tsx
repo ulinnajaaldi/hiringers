@@ -16,12 +16,12 @@ import { useToast } from "@/hooks/useToast";
 export function Toaster() {
   const { toasts } = useToast();
 
-  const getIcon = (variant?: string) => {
+  const getIcon = (variant?: string | null) => {
     switch (variant) {
       case "success":
-        return <CheckCircle2 className="h-5 w-5 shrink-0 text-teal-500" />;
+        return <CheckCircle2 className="text-success-main h-5 w-5 shrink-0" />;
       case "destructive":
-        return <AlertCircle className="h-5 w-5 shrink-0 text-red-500" />;
+        return <AlertCircle className="text-destructive h-5 w-5 shrink-0" />;
       case "info":
         return <Info className="h-5 w-5 shrink-0 text-blue-500" />;
       default:
@@ -33,9 +33,9 @@ export function Toaster() {
     <ToastProvider>
       {toasts.map(({ id, title, description, action, variant, ...props }) => (
         <Toast key={id} variant={variant as any} {...props}>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {getIcon(variant)}
-            <div className="flex flex-col gap-1">
+            <div className="flex w-full flex-col gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (
                 <ToastDescription>{description}</ToastDescription>

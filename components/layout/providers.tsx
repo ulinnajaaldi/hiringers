@@ -5,7 +5,6 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Toaster } from "../ui/toaster";
 
@@ -54,7 +53,7 @@ const Providers: React.FC<
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>{children}</NuqsAdapter>
+      {children}
       <Toaster />
     </QueryClientProvider>
   );
