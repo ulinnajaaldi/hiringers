@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Overview
 
-## Getting Started
+### hiringers (Hiring Management System)
 
-First, run the development server:
+- LIVE demo (User): [https://hiringers.vercel.app/](https://hiringers.vercel.app/)
+- LIVE demo (Admin): [https://hiringers.vercel.app/admin](https://hiringers.vercel.app/admin)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Architecture
+
+This project follows **Clean Architecture** principles with clear separation of concerns:
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/              # Base UI components (shadcn/ui)
+│   ├── common/          # Shared business components
+│   └── layouts/         # Layout components
+├── constants/           # Application constants
+├── domains/             # Domain entities and types
+├── drizzle/             # Drizzle ORM generated files (BE only)
+├── features/            # Feature-based modules
+├── hooks/              # Custom React hooks
+├── lib/                # Utility libraries and helpers
+├── server/             # API route handlers and server-side code (BE only)
+├── types/              # Global type definitions
+├── useCases/           # Business logic and use cases
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🛠 Tech Stack (Full in package.json)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Core Technologies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **NextJS 16** - Frontend framework
+- **TypeScript** - Type safety and developer experience
+- **TailwindCSS** - Utility-first CSS framework
+- **Mediapipe TaskVision** - Hand Gesture Recognition
 
-## Learn More
+#### State Management & Data Fetching
 
-To learn more about Next.js, take a look at the following resources:
+- **Axios** - HTTP client for API requests
+- **TanStack React Query** - Server state management and caching
+- **Zustand** - Client-side state management
+- **React Hook Form** - Form state management
+- **Zod** - Schema validation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### UI Components & Styling
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **shadcn/ui** - Barebone component library
+- **Radix UI** - Accessible UI primitives
+- **Tanstack Table** - Data table components
 
-## Deploy on Vercel
+#### Development Tools
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Backend (For Mock API)
+
+- **Hono** - Backend framework for building APIs
+- **Drizzle ORM** - ORM
+- **Supabase** - Database and Storage
+
+<hr/>
+
+### Local Installation
+
+#### Prerequisites
+
+- Node.js
+- pnpm (recommended) or npm
+
+#### Setup Steps
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd hiringers
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Environment Configuration**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Configure your environment variables in `.env`
+
+4. **Start development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+5. **Open your browser**
+   Navigate to `http://localhost:3000`
+
+## Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview production build
+- `pnpm lint` - Run ESLint
+- `pnpm format` - Format code with Prettier
